@@ -10,7 +10,7 @@ public class ManPower {
 	
 	 @Id
 	 @GeneratedValue(strategy=GenerationType.AUTO)
-	int id;
+	int id; 
 	String name;
 	String email;
 	String phone;
