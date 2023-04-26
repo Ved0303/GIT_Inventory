@@ -13,7 +13,7 @@ public class ManPower {
 	int id; 
 	String name;
 	String email;
-	String phone;
+	String phone; 
 	String aadhar;
 	String pan;
 	String type; //Employee/ Contractor/ Individual
