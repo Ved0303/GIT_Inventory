@@ -16,7 +16,7 @@
     <th>Aadhar</th>
     <th>PAN</th>
     <th>Type</th>
-    <th>Action</th>
+    <th>Action</th> 
   </tr>
 <%
 List<Organization> organizationList= request.getAttribute("organizationList") !=null ? (List<Organization>)request.getAttribute("organizationList") : new ArrayList();
@@ -39,5 +39,5 @@ for(Organization organization: organizationList){
 %>
 </table>
 
-
+---
 <jsp:include page="/footer"></jsp:include>
