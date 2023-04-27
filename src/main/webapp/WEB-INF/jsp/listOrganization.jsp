@@ -39,5 +39,5 @@ for(Organization organization: organizationList){
 %>
 </table>
 
----
+-----
 <jsp:include page="/footer"></jsp:include>
