@@ -20,12 +20,9 @@ function validateForm(){
 
 	var form=document.forms["myForm"];
 	
-	var isFormInfoNotValid = validateValue(form["orgName"] , "Category Name") <0 ||
-		validateValue(form["email"] , "Category email") <0 ||
-		validateValue(form["phone"] , "Category phone") <0 ||
-		validateValue(form["aadhar"] , "Category aadhar") <0 ||
-		validateValue(form["pan"] , "Category PAN") <0 ||
-		validateValue(form["orgType"] , "Category Type") <0  ;
+	var isFormInfoNotValid = validateValue(form["equipmentType"] , "Equipment Type") <0 ||
+		validateValue(form["inboundOutbound"] , "Inbound Or Outbound") <0 ||
+		validateValue(form["categoryName"] , "Category Name") <0  ;
 	
 	if(isFormInfoNotValid){
 		return false;
@@ -35,21 +32,36 @@ function validateForm(){
 
 </script>
 
-
-	<form action="createCategory" method="post" name="myForm" class="myForm" 
+<form class="border m-3 border-primary bg-info-subtle fw-bold" action="createCategory" method="post" name="myForm"  
 		onsubmit="return validateForm()">
+            <h1 class="headingHeader border-bottom border-danger ">Category Master</h1>
+            <h3 class="headingHeader border-bottom border-danger "><font color="red">${errorMessage}</font></h3>
+	        <input type="hidden" name="id" value="${category.id}" />
 
-		<h2>Category Information</h2>
-		<h3><font color="red">${errorMessage}</font></h3>		
-		<hr><br>
+			<div class="m-3 col-4">
+              <label for="equipmentType" class="form-label">Equipment Type</label>
+              <input type="text" class="form-control" id="equipmentType" name="equipmentType"  value="${category.equipmentType}"  aria-describedby="Equipment Type">
+              <div  class="form-text">Enter Equipment Type</div>
+            </div>
 
-		<input type="hidden" name="id" value="${category.id}" /> 
-		Equipment Type <input type="text" name="equipmentType" value="${category.equipmentType}" /><br> 
-		<input type="radio" name="inboundOutbound" value="inbound" ${category.inboundOutbound=="inbound" ? "checked" : ""}/> Inbound 
-						  <input type="radio" name="inboundOutbound" value="outbound" ${category.inboundOutbound=="outbound" ? "checked" : ""}/> Outbound <br> 
+			<div class="m-3 col-4">
+              <label for="inboundOutbound" class="form-label">Inbound/Outbound</label>
+				<input type="radio" name="inboundOutbound" value="inbound" ${category.inboundOutbound=="inbound" ? "checked" : ""}/> Inbound 
+				<input type="radio" name="inboundOutbound" value="outbound" ${category.inboundOutbound=="outbound" ? "checked" : ""}/> Outbound
+				<div  class="form-text">Select Inbound or Outbound</div>
+            </div>
 
-	Category Name <input type="text" name="categoryName" value="${category.categoryName}" /><br> 
-		Parent Category <select name="parentCategoryId"><option value="-1">---</option>
+			<div class="m-3 col-4">
+              <label for="categoryName" class="form-label">Category Name</label>
+              <input type="text" class="form-control" id="categoryName" name="categoryName"  value="${category.categoryName}"  
+              aria-describedby="Category Name ">
+              <div  class="form-text">Enter category Name</div>
+            </div>
+
+			<div class="m-3 col-4">
+              <label for="parentCategory" class="form-label">Parent Category</label>
+              <select id="parentCategory" name="parentCategoryId" aria-describedby="Parent Category">
+              	<option value="-1">---</option>
 			<%
 			List<Category> categoryList = (List<Category>) request.getAttribute("categoryList");
 			Category parentCategory=category.getParentCategory();
@@ -59,17 +71,20 @@ function validateForm(){
 			}
 			for (Category cat: categoryList) {
 			%>
-			<option value="<%=cat.getId()%>"
-				<%=cat.getId() == parentCategoryId ? "selected" : ""%>><%=cat.getCategoryName()%></option>
+				<option value="<%=cat.getId()%>" <%=cat.getId() == parentCategoryId ? "selected" : ""%>><%=cat.getCategoryName()%></option>
 			<%
 			}
 			%>
-		</select> <br>
+			  </select> 
+              <div  class="form-text">Select Parent Category</div>
+            </div>
+            		 
+            		 
+            		 <br>
  
 
-		<input id="btn" type=submit value="Save Category" />
-
-	</form>
+            <button type="submit" class="btn btn-primary m-3">Save Category</button>
+          </form>
 
 
 <jsp:include page="/footer"></jsp:include>
