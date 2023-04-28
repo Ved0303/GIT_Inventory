@@ -14,14 +14,14 @@ User user=(User)session.getAttribute("user");
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <title>${title} </title>
+    <title>-- ${title} --</title>
 
     <script>
 <%
 	if(user.getRole()==Constants.ADMIN_ROLE || user.getRole()==Constants.EDIT_ROLE){
 %>
         var array = ["Home", "Forms", "Create Form" ,"Create WearHouse","List WearHouse",
-        	"Create Org","List Org","Log Out!" ];
+        	"Create Org","List Org","Log Out!","AAAA"];
         var links = ["/welcome", "/listForm", "/createForm","/createWearHouse","/listWearHouse",
         	"/createOrganization","/listOrganization","/logout"];
         let childArray = [];
