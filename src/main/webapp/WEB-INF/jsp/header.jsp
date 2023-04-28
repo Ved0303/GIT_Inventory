@@ -20,10 +20,16 @@ User user=(User)session.getAttribute("user");
 <%
 	if(user.getRole()==Constants.ADMIN_ROLE || user.getRole()==Constants.EDIT_ROLE){
 %>
-        var array = ["Home", "Forms", "Create Form" ,"Create WearHouse","List WearHouse",
-        	"Create Org","List Org","Log Out!","AAAA"];
-        var links = ["/welcome", "/listForm", "/createForm","/createWearHouse","/listWearHouse",
-        	"/createOrganization","/listOrganization","/logout"];
+        var array = ["Home", "Forms", "Create Form" ,
+        	"Create WearHouse","List WearHouse",
+        	"Create Org","List Org",
+        	"Category","Category List",
+        	"Log Out!"];
+        var links = ["/welcome", "/listForm", "/createForm",
+        	"/createWearHouse","/listWearHouse",
+        	"/createOrganization","/listOrganization",
+        	"/createCategory","/listCategory",
+        	"/logout"];
         let childArray = [];
         let childLinks = [];
 <%
@@ -31,20 +37,8 @@ User user=(User)session.getAttribute("user");
 %>
 		var array = ["Home", "Pay Details", "Log Out!" ];
 		var links = ["/welcome", "/payDetails","/logout"];
-		let childArray = [
-			[],
-		    ["link1", "link2", "link3", "link4"],
-		    [],
-		    [],
-		    ["Phone", "Mobile", "Email", "Fax"]
-		];
-		let childLinks = [
-			[],
-		    ["link1.html", "link2.html", "link3.html", "link4.html"],
-		    [],
-		    [],
-		    ["Phone.html", "Mobile.html", "Email.html", "Fax.html"]
-		];
+		let childArray = [];
+		let childLinks = [];
 
 <%
 	}
