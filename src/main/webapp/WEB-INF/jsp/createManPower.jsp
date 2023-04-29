@@ -4,7 +4,8 @@
 
 <%@ page
 	import="java.util.*,com.kheti.Inventory.model.ManPower"%>
-
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="css/form.css"> 
 <script src="js/form.js"></script>
 <script>
@@ -35,27 +36,53 @@ function validateForm(){
 </script>
 
 
-	<form action="createManPower" method="post" name="myForm" class="myForm" 
-		onsubmit="return validateForm()">
+ <form action="createManPower" method="post" name="myForm" class="border m-3 border-primary bg-info-subtle fw-bold "
+        onsubmit="return validateForm()">
 
-		<h2>ManPower Information</h2>
-		<h3><font color="red">${errorMessage}</font></h3>		
-		<hr><br>
+        <h2 class="text-center border-bottom border-danger ">ManPower Information</h2>
+        <h3>
+            <font color="red">${errorMessage}</font>
+        </h3>
 
-		<input type="hidden" name="id" value="${manPower.id}" /> 
-		Name <input type="text" name="name" value="${manPower.name}" /><br> 
-		Email <input type="text" name="email" value="${manPower.email}" /><br> 
-		Phone <input type="text" name="phone" value="${manPower.phone}" /><br> 
-		Aadhar <input type="text" name="aadhar" value="${manPower.aadhar}" /><br> 
-		Pan <input type="text" name="pan" value="${manPower.pan}" /><br> 
-		Type <input type="radio" name="type" value="Employee" ${manPower.type=="Employee" ? "checked" : ""}/> Employee 
-			<input type="radio" name="type" value="Contractor" ${manPower.type=="Contractor" ? "checked" : ""}/> Contractor
-			<input type="radio" name="type" value="Individual" ${manPower.type=="Individual" ? "checked" : ""}/> Individual <br> 
-		
 
-		<input id="btn" type=submit value="Save Form" />
-
-	</form>
+        <input type="hidden" name="id" value="${manPower.id}" />
+        <div class="m-3 col-lg-4 ">
+            <label for="Name" class="form-label"> Name</label>
+            <input type="text" class="form-control" id="Name" name="name" value="${manPower.name}" />
+        </div>
+        <div class="m-3 col-lg-4">
+            <label for="Email" class="form-label"> Email</label>
+            <input type="email" class="form-control" id="Email" name="email" value="${manPower.email}" />
+        </div>
+        <div class="m-3 col-lg-4">
+            <label for="Phone" class="form-label"> Phone</label>
+            <input type="tel" class="form-control" id="Phone" name="phone" value="${manPower.phone}" />
+        </div>
+        <div class="m-3 col-lg-4">
+            <label for="Aadhar Number" class="form-label"> Aadhar Number</label>
+            <input type="text" class="form-control" id="Aadhar Number" name="aadhar" value="${manPower.aadhar}" />
+        </div>
+        <div class="m-3 col-lg-4">
+            <label for="Pan Number" class="form-label"> Pan Number</label>
+            <input type="text" class="form-control" id="Pan Number" name="pan" value="${manPower.pan}" />
+        </div>
+        <div class="m-3 col-lg-4">
+            <h6 class="fw-bold">Type</h6>
+            <label class="radio-inline">
+                <input type="radio" name="type" value="Employee" ${manPower.type=="Employee" ? "checked" : "" } />
+                Employee
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="type" value="Contractor" ${manPower.type=="Contractor" ? "checked" : "" } />
+                Contractor
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="type" value="Individual" ${manPower.type=="Individual" ? "checked" : "" } />
+                Individual
+            </label>
+        </div>
+        <input class="btn btn-primary m-3" type=submit value="Save Form" />
+    </form>
 
 
 <jsp:include page="/footer"></jsp:include>
