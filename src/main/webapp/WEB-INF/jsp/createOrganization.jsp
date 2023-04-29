@@ -7,6 +7,11 @@
 
 <link rel="stylesheet" href="css/form.css"> 
 <script src="js/form.js"></script>
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+        crossorigin="anonymous"></script>
  
 <script>
 
@@ -36,25 +41,51 @@ function validateForm(){
 </script>
 
 
-	<form action="createOrganization" method="post" name="myForm" class="myForm" 
-		onsubmit="return validateForm()">
+	<form action="createOrganization" method="post" name="myForm"
+        class="border m-3 border-primary bg-info-subtle fw-bold" onsubmit="return validateForm()">
 
-		<h2>Organization Information</h2>
-		<h3><font color="red">${errorMessage}</font></h3>		
-		<hr><br>
+        <h2 class=" border-bottom border-danger text-center ">Organization Information</h2>
+        <h3>
+            <font color="red">${errorMessage}</font>
+        </h3>
+        <input type="hidden" name="orgID" value="${organization.orgID}" />
+        <div class="m-3 col-lg-4">
+            <label for=" Organization Name " class="form-label"> Organization Name </label>
+            <input type="text" class="form-control" id=" Organization Name" name="orgName"
+                value="${organization.orgName}" />
+        </div>
+        <div class="m-3 col-lg-4">
+            <label for="Organization Email" class="form-label">Organization Email</label>
+            <input type="text" class="form-control" id="Organization Email" name="email"
+                value="${organization.email}" />
+        </div>
+        <div class="m-3 col-lg-4">
+            <label for="Organization Phone" class="form-label">Organization Phone</label>
+            <input type="text" class="form-control" id="Organization Phone" name="phone"
+                value="${organization.phone}" />
+        </div>
+        <div class="m-3 col-lg-4">
+            <label for="Organization Aadhar" class="form-label">Organization Aadhar</label>
+            <input type="text" class="form-control" id="Organization Aadhar" name="aadhar"
+                value="${organization.aadhar}" />
+        </div>
+        <div class="m-3 col-lg-4">
+            <label for="Organization PAN" class="form-label">Organization PAN</label>
+            <input type="text" class="form-control" id="Organization PAN" name="pan" value="${organization.pan}" />
+        </div>
+        <div class="m-3 col-lg-4">
+            <h6 class="fw-bold">Organization Type </h6>
+            <label class="radio-inline">
+                <input type="radio" name="orgType" value="Customer" ${organization.orgType=="Customer" ? "checked" : ""
+                    } /> Customer</label>
+            <label class="radio-inline">
+                <input type="radio" name="orgType" value="Supplier" ${organization.orgType=="Supplier" ? "checked" : ""
+                    } />
+                Supplier</label>
+        </div>
 
-		<input type="hidden" name="orgID" value="${organization.orgID}" /> 
-		Organization Name <input type="text" name="orgName" value="${organization.orgName}" /><br> 
-		Organization Email <input type="text" name="email" value="${organization.email}" /><br> 
-		Organization Phone <input type="text" name="phone" value="${organization.phone}" /><br> 
-		Organization Aadhar <input type="text" name="aadhar" value="${organization.aadhar}" /><br> 
-		Organization PAN <input type="text" name="pan" value="${organization.pan}" /><br> 
-		Organization Type <input type="radio" name="orgType" value="Customer" ${organization.orgType=="Customer" ? "checked" : ""}/> Customer 
-						  <input type="radio" name="orgType" value="Supplier" ${organization.orgType=="Supplier" ? "checked" : ""}/> Supplier <br> 
+        <input id="btn" type=submit class="btn btn-primary m-3" value="Save Form" />
 
-		<input id="btn" type=submit value="Save Form" />
-
-	</form>
-
+    </form>
 
 <jsp:include page="/footer"></jsp:include>
