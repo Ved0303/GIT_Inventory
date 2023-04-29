@@ -14,17 +14,19 @@ public class User {
 	String name;
 	String password;
 	int role;
+	int ownerId;
 	
 	public User() {
 		super();
 	}
 		
-	public User(int id, String name, String password, int role) {
+	public User(int id, String name, String password, int role, int ownerId) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.password = password;
 		this.role = role;
+		this.ownerId=ownerId;
 	}
 
 
@@ -57,10 +59,19 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	public int getOwnerId() {
+		return ownerId;
+	}
+
+	public void setOwnerId(int ownerId) {
+		this.ownerId = ownerId;
+	}
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", name=" + name + ", password=" + password + ", role=" + role + "]";
+		return "User [id=" + id + ", name=" + name + ", password=" + password + ", role=" + role + ", ownerId="
+				+ ownerId + "]";
 	}
 	
 	

@@ -9,9 +9,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import com.kheti.Inventory.model.Category;
+import com.kheti.Inventory.model.User;
 import com.kheti.Inventory.service.CategoryService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class CategoryController {
@@ -37,11 +39,11 @@ public class CategoryController {
 	}
 
 	@RequestMapping(value = "/createCategory", method = RequestMethod.POST)
-	public String createCategory(@ModelAttribute Category category, ModelMap model, HttpServletRequest request) {
-	System.out.println("Category Controller -> createCategory");
+	public String createCategory(@ModelAttribute Category category, ModelMap model, HttpServletRequest request, HttpSession session) {
+	System.out.println("Category Controller -> createCategory CategoryName: " + request.getParameter("categoryName"));
 
-		System.out.println(
-				"CategoryName: " + request.getParameter("categoryName") );
+		User user=(User)session.getAttribute("user");
+		category.setOwnerId(user.getOwnerId());
 		
 		int parentCategoryId=Integer.parseInt(request.getParameter("parentCategoryId"));
 		if(parentCategoryId == -1) {

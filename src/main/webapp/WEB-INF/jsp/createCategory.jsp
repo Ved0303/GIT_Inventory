@@ -7,14 +7,7 @@
 
 <link rel="stylesheet" href="css/form.css"> 
 <script src="js/form.js"></script>
- 
 <script>
-
-<%
-
-Category category = (Category) request.getAttribute("category");
-
-%>
 
 function validateForm(){
 
@@ -31,6 +24,11 @@ function validateForm(){
 }
 
 </script>
+<%
+
+Category category = (Category) request.getAttribute("category");
+
+%>
 
 <form class="border m-3 border-primary bg-info-subtle fw-bold" action="createCategory" method="post" name="myForm"  
 		onsubmit="return validateForm()">
@@ -41,21 +39,18 @@ function validateForm(){
 			<div class="m-3 col-4">
               <label for="equipmentType" class="form-label">Equipment Type</label>
               <input type="text" class="form-control" id="equipmentType" name="equipmentType"  value="${category.equipmentType}"  aria-describedby="Equipment Type">
-              <div  class="form-text">Enter Equipment Type</div>
-            </div>
+              </div>
 
 			<div class="m-3 col-4">
               <label for="inboundOutbound" class="form-label">Inbound/Outbound</label>
 				<input type="radio" name="inboundOutbound" value="inbound" ${category.inboundOutbound=="inbound" ? "checked" : ""}/> Inbound 
 				<input type="radio" name="inboundOutbound" value="outbound" ${category.inboundOutbound=="outbound" ? "checked" : ""}/> Outbound
-				<div  class="form-text">Select Inbound or Outbound</div>
             </div>
 
 			<div class="m-3 col-4">
               <label for="categoryName" class="form-label">Category Name</label>
               <input type="text" class="form-control" id="categoryName" name="categoryName"  value="${category.categoryName}"  
               aria-describedby="Category Name ">
-              <div  class="form-text">Enter category Name</div>
             </div>
 
 			<div class="m-3 col-4">
@@ -76,12 +71,7 @@ function validateForm(){
 			}
 			%>
 			  </select> 
-              <div  class="form-text">Select Parent Category</div>
             </div>
-            		 
-            		 
-            		 <br>
- 
 
             <button type="submit" class="btn btn-primary m-3">Save Category</button>
           </form>
