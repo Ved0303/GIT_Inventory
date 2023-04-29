@@ -5,8 +5,13 @@
 <%@ page
 	import="java.util.*,com.kheti.Inventory.model.WearHouse"%>
 
-<link rel="stylesheet" href="css/form.css"> 
+ 
 <script src="js/form.js"></script>
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+    crossorigin="anonymous"></script>
 <script>
 
 <%
@@ -32,21 +37,29 @@ function validateForm(){
 </script>
 
 
-	<form action="createWearHouse" method="post" name="myForm" class="myForm" 
-		onsubmit="return validateForm()">
+		<form action="createWearHouse" method="post" name="myForm" class="border m-3 border-primary bg-info-subtle fw-bold"
+        onsubmit="return validateForm()">
 
-		<h2>WearHouse Information</h2>
-		<h3><font color="red">${errorMessage}</font></h3>		
-		<hr><br>
+        <h2 class=" border-bottom border-danger text-center ">WearHouse Information</h2>
+        <h3>
+            <font color="red">${errorMessage}</font>
+        </h3>
+        <input type="hidden" name="id" value="${wearHouse.id}" />
+        <div class="m-3 col-lg-4">
+            <label for="  WearHouse Name " class="form-label"> WearHouse Name  </label>
+           <input type="text"  class="form-control" id=" WearHouse Name " name="wearHouseName" value="${wearHouse.wearHouseName}" />
+        </div>
+        <div class="m-3 col-lg-4">
+            <label for="  WearHouse Address  " class="form-label">  WearHouse Address  </label>
+            <input type="text"  class="form-control" id="  WearHouse Address " name="wearHouseAddress" value="${wearHouse.wearHouseAddress}" />
+        </div>
+        <div class="m-3 col-lg-4">
+            <label for="  WearHouse Contact " class="form-label">  WearHouse Contact </label>
+            <input type="text"  class="form-control" id="  WearHouse Contact" name="wearHouseContact" value="${wearHouse.wearHouseContact}" />
+        </div>
 
-		<input type="hidden" name="id" value="${wearHouse.id}" /> 
-		WearHouse Name <input type="text" name="wearHouseName" value="${wearHouse.wearHouseName}" /><br> 
-		WearHouse Address <input type="text" name="wearHouseAddress" value="${wearHouse.wearHouseAddress}" /><br> 
-		WearHouse Contact <input type="text" name="wearHouseContact" value="${wearHouse.wearHouseContact}" /><br> 
+        <input id="btn" class="btn btn-primary m-3" type=submit value="Save Form" />
 
-		<input id="btn" type=submit value="Save Form" />
-
-	</form>
-
+    </form>
 
 <jsp:include page="/footer"></jsp:include>
