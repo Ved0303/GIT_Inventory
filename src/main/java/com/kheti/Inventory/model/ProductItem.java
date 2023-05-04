@@ -11,57 +11,68 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class ProductItem extends BaseTransaction{
+public class ProductItem {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	int id;
-	
-	@ManyToOne(fetch = FetchType.LAZY) 
+
+	@ManyToOne(fetch = FetchType.LAZY)
 	@Nonnull
 	Expense expense;
-	
+
+	@ManyToOne(fetch = FetchType.LAZY)
 	Category category;
-	
+
 	String productName;
 	String brandName;
-	
+
 	String unitType;
-	String subUnitType;
+	int subUnitQuantity;
 	double quantity;
-	double unitPrice;	
-	double taxPercentage;//max 100
+	double unitPrice;
+	double taxPercentage;// max 100
 	Date expiryDate;
-	
-	public ProductItem() {}
-	
-	public ProductItem(int id, int enteredBy, Date enteredOn, int ownerId,  Expense expense, Category category,
-			String productName, String brandName, String unitType, String subUnitType, double quantity,
+
+	int enteredBy;
+	Date enteredOn;
+	Date modifiedOn;
+	int ownerId;
+
+	public ProductItem() {
+	}
+
+	public ProductItem(int id, int enteredBy, Date enteredOn, int ownerId, Expense expense, Category category,
+			String productName, String brandName, String unitType, int subUnitQuantity, double quantity,
 			double unitPrice, double taxPercentage, Date expiryDate) {
-		super(enteredBy, enteredOn, ownerId);
+		this.enteredBy = enteredBy;
+		this.enteredOn = enteredOn;
+		this.ownerId = ownerId;
 		this.id = id;
 		this.expense = expense;
 		this.category = category;
 		this.productName = productName;
 		this.brandName = brandName;
 		this.unitType = unitType;
-		this.subUnitType = subUnitType;
+		this.subUnitQuantity = subUnitQuantity;
 		this.quantity = quantity;
 		this.unitPrice = unitPrice;
 		this.taxPercentage = taxPercentage;
 		this.expiryDate = expiryDate;
 	}
-	
+
 	public ProductItem(int enteredBy, Date enteredOn, int ownerId, Expense expense, Category category,
-			String productName, String brandName, String unitType, String subUnitType, double quantity,
+			String productName, String brandName, String unitType, int subUnitQuantity, double quantity,
 			double unitPrice, double taxPercentage, Date expiryDate) {
-		super(enteredBy, enteredOn, ownerId);
+		this.enteredBy = enteredBy;
+		this.enteredOn = enteredOn;
+		this.ownerId = ownerId;
 		this.expense = expense;
 		this.category = category;
 		this.productName = productName;
 		this.brandName = brandName;
 		this.unitType = unitType;
-		this.subUnitType = subUnitType;
+		this.subUnitQuantity = subUnitQuantity;
 		this.quantity = quantity;
 		this.unitPrice = unitPrice;
 		this.taxPercentage = taxPercentage;
@@ -116,14 +127,6 @@ public class ProductItem extends BaseTransaction{
 		this.unitType = unitType;
 	}
 
-	public String getSubUnitType() {
-		return subUnitType;
-	}
-
-	public void setSubUnitType(String subUnitType) {
-		this.subUnitType = subUnitType;
-	}
-
 	public double getQuantity() {
 		return quantity;
 	}
@@ -156,9 +159,53 @@ public class ProductItem extends BaseTransaction{
 		this.expiryDate = expiryDate;
 	}
 
-	
-	
+	public int getSubUnitQuantity() {
+		return subUnitQuantity;
+	}
 
-	
-	
+	public void setSubUnitQuantity(int subUnitQuantity) {
+		this.subUnitQuantity = subUnitQuantity;
+	}
+
+	public int getEnteredBy() {
+		return enteredBy;
+	}
+
+	public void setEnteredBy(int enteredBy) {
+		this.enteredBy = enteredBy;
+	}
+
+	public Date getEnteredOn() {
+		return enteredOn;
+	}
+
+	public void setEnteredOn(Date enteredOn) {
+		this.enteredOn = enteredOn;
+	}
+
+	public int getOwnerId() {
+		return ownerId;
+	}
+
+	public void setOwnerId(int ownerId) {
+		this.ownerId = ownerId;
+	}
+
+	public Date getModifiedOn() {
+		return modifiedOn;
+	}
+
+	public void setModifiedOn(Date modifiedOn) {
+		this.modifiedOn = modifiedOn;
+	}
+
+	@Override
+	public String toString() {
+		return "ProductItem [id=" + id + ", expense=" + expense + ", category=" + category.getCategoryName()
+				+ ", productName=" + productName + ", brandName=" + brandName + ", unitType=" + unitType
+				+ ", subUnitQuantity=" + subUnitQuantity + ", quantity=" + quantity + ", unitPrice=" + unitPrice
+				+ ", taxPercentage=" + taxPercentage + ", expiryDate=" + expiryDate + ", enteredBy=" + enteredBy
+				+ ", enteredOn=" + enteredOn + ", ownerId=" + ownerId + "]";
+	}
+
 }

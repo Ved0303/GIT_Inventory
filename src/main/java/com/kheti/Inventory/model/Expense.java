@@ -9,19 +9,21 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 @Entity
-public class Expense extends BaseTransaction {
+public class Expense  {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	int id;
 	
-	String isTaxApplied;//yes/no
-	String isFullPaid;//full/partial
+	String taxApplied;//yes/no
+	String fullPaid;//full/partial
 	String transactionType;//purchase/sell
 
+	@ManyToOne(fetch = FetchType.LAZY)
 	Organization vender;
 	
 	double totalAmount; //Sum of Expense_Product_Mapping
@@ -35,15 +37,24 @@ public class Expense extends BaseTransaction {
 	@Nullable
 	List<Payment> paymentList;
 
+	int enteredBy;
+	Date enteredOn;
+	Date modifiedOn;
+	int ownerId;
+
+	
 	public Expense() {}
 	
-	public Expense(int id, int enteredBy, Date enteredOn, int ownerId,  String isTaxApplied, String isFullPaid,
+	public Expense(int id, int enteredBy, Date enteredOn, int ownerId,  String taxApplied, String fullPaid,
 			String transactionType, Organization vender, double totalAmount, double totalPaid,
 			List<ProductItem> productList, List<Payment> paymentList) {
-		super(enteredBy, enteredOn, ownerId);
+		this.enteredBy=enteredBy;
+		this.enteredOn=enteredOn;
+		this.ownerId=ownerId;
+	
 		this.id = id;
-		this.isTaxApplied = isTaxApplied;
-		this.isFullPaid = isFullPaid;
+		this.taxApplied = taxApplied;
+		this.fullPaid = fullPaid;
 		this.transactionType = transactionType;
 		this.vender = vender;
 		this.totalAmount = totalAmount;
@@ -52,12 +63,15 @@ public class Expense extends BaseTransaction {
 		this.paymentList = paymentList;
 	}
 	
-	public Expense(int enteredBy, Date enteredOn, int ownerId,  String isTaxApplied, String isFullPaid,
+	public Expense(int enteredBy, Date enteredOn, int ownerId,  String taxApplied, String fullPaid,
 			String transactionType, Organization vender, double totalAmount, double totalPaid,
 			List<ProductItem> productList, List<Payment> paymentList) {
-		super(enteredBy, enteredOn, ownerId);
-		this.isTaxApplied = isTaxApplied;
-		this.isFullPaid = isFullPaid;
+		this.enteredBy=enteredBy;
+		this.enteredOn=enteredOn;
+		this.ownerId=ownerId;
+	
+		this.taxApplied = taxApplied;
+		this.fullPaid = fullPaid;
 		this.transactionType = transactionType;
 		this.vender = vender;
 		this.totalAmount = totalAmount;
@@ -66,11 +80,14 @@ public class Expense extends BaseTransaction {
 		this.paymentList = paymentList;
 	}
 	
-	public Expense(int enteredBy, Date enteredOn, int ownerId,  String isTaxApplied, String isFullPaid,
+	public Expense(int enteredBy, Date enteredOn, int ownerId,  String taxApplied, String fullPaid,
 			String transactionType, Organization vender, double totalAmount, double totalPaid) {
-		super(enteredBy, enteredOn, ownerId);
-		this.isTaxApplied = isTaxApplied;
-		this.isFullPaid = isFullPaid;
+		this.enteredBy=enteredBy;
+		this.enteredOn=enteredOn;
+		this.ownerId=ownerId;
+	
+		this.taxApplied = taxApplied;
+		this.fullPaid = fullPaid;
 		this.transactionType = transactionType;
 		this.vender = vender;
 		this.totalAmount = totalAmount;
@@ -85,29 +102,6 @@ public class Expense extends BaseTransaction {
 		this.id = id;
 	}
 
-	public String isTaxApplied() {
-		return isTaxApplied;
-	}
-
-	public void setTaxApplied(String isTaxApplied) {
-		this.isTaxApplied = isTaxApplied;
-	}
-
-	public String isFullPaid() {
-		return isFullPaid;
-	}
-
-	public void setFullPaid(String isFullPaid) {
-		this.isFullPaid = isFullPaid;
-	}
-
-	public String isTransactionType() {
-		return transactionType;
-	}
-
-	public void setTransactionType(String transactionType) {
-		this.transactionType = transactionType;
-	}
 
 	public Organization getVender() {
 		return vender;
@@ -148,5 +142,76 @@ public class Expense extends BaseTransaction {
 	public void setPaymentList(List<Payment> paymentList) {
 		this.paymentList = paymentList;
 	}
+
+	public String getTaxApplied() {
+		return taxApplied;
+	}
+
+	public void setTaxApplied(String taxApplied) {
+		this.taxApplied = taxApplied;
+	}
+
+	public String getFullPaid() {
+		return fullPaid;
+	}
+
+	public void setFullPaid(String fullPaid) {
+		this.fullPaid = fullPaid;
+	}
+
+	public String getTransactionType() {
+		return transactionType;
+	}
+
+	public void setTransactionType(String transactionType) {
+		this.transactionType = transactionType;
+	}
+	
+	
+
+	public int getEnteredBy() {
+		return enteredBy;
+	}
+
+	public void setEnteredBy(int enteredBy) {
+		this.enteredBy = enteredBy;
+	}
+
+	public Date getEnteredOn() {
+		return enteredOn;
+	}
+
+	public void setEnteredOn(Date enteredOn) {
+		this.enteredOn = enteredOn;
+	}
+
+	public int getOwnerId() {
+		return ownerId;
+	}
+
+	public void setOwnerId(int ownerId) {
+		this.ownerId = ownerId;
+	}
+	
+
+	public Date getModifiedOn() {
+		return modifiedOn;
+	}
+
+	public void setModifiedOn(Date modifiedOn) {
+		this.modifiedOn = modifiedOn;
+	}
+
+	@Override
+	public String toString() {
+		return "Expense [id=" + id + ", taxApplied=" + taxApplied + ", fullPaid=" + fullPaid + ", transactionType="
+				+ transactionType + ", vender=" + vender.getOrgName() + ", totalAmount=" + totalAmount + ", totalPaid=" + totalPaid
+				+ ", enteredBy=" + enteredBy
+				+ ", enteredOn=" + enteredOn + ", ownerId=" + ownerId + "]";
+	}
+
+	
+	
+	
 	
 }

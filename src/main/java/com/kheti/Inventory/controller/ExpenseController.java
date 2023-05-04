@@ -1,7 +1,5 @@
 package com.kheti.Inventory.controller;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,7 +21,8 @@ import com.kheti.Inventory.service.ExpenseService;
 import com.kheti.Inventory.service.OrganizationService;
 import com.kheti.Inventory.service.PaymentService;
 import com.kheti.Inventory.service.ProductService;
-import com.kheti.Inventory.util.Constants;
+import com.kheti.Inventory.util.DateUtil;
+import com.kheti.Inventory.util.Units;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -59,7 +58,7 @@ public class ExpenseController {
 
 		List<Organization> organizations = organizationService.getAllOrganization();
 		request.setAttribute("organizations", organizations);
-		List<Category> categories= categoryService.getAllCategory();
+		List<Category> categories = categoryService.getAllCategory();
 		request.setAttribute("categories", categories);
 
 		return "createExpense";
@@ -75,27 +74,60 @@ public class ExpenseController {
 
 		Organization vender = organizationService.getOrganization(Integer.parseInt(request.getParameter("venderId")));
 		expense.setVender(vender);
+		if (expense.getId() <= 0) {
+			expense.setEnteredOn(new Date());
+			expense.setOwnerId(user.getOwnerId());
+			expense.setEnteredBy(user.getId());
+		}
+		expense.setModifiedOn(new Date());
 
 		int newExpenseId = expenseService.saveExpense(expense);
 		System.out.println("Expense Saved with ID: " + newExpenseId);
 
 		List<ProductItem> productList = populateProductItems(request, expense, user.getId(), user.getOwnerId());
 		expense.setProductList(productList);
+		double totalAmount = calculateTotal(expense.getTaxApplied(), productList);
+		expense.setTotalAmount(totalAmount);
 		
 		List<Payment> paymentList = populatePayments(request, expense, user.getId(), user.getOwnerId());
 		expense.setPaymentList(paymentList);
-		
-		expenseService.saveExpense(expense); //Save after populating Products and Payments
-		
+		double totalPaid= calculateTotalPaid(paymentList);
+		expense.setTotalPaid(totalPaid);
+
+		expenseService.saveExpense(expense); // Save after populating Products and Payments
+
 		List<Organization> organizations = organizationService.getAllOrganization();
 		request.setAttribute("organizations", organizations);
-		List<Category> categories= categoryService.getAllCategory();
+		List<Category> categories = categoryService.getAllCategory();
 		request.setAttribute("categories", categories);
 
 		model.put("expense", expense);
 		model.put("errorMessage", "Record Saved Successfully");
 
 		return "createExpense";
+	}
+
+	private double calculateTotalPaid(List<Payment> paymentList) {
+		double total = 0;
+
+		for (Payment payment : paymentList) {
+			total+=payment.getAmout();
+		}
+		return total;
+	}
+
+	private double calculateTotal(String taxApplied, List<ProductItem> productList) {
+		double total = 0;
+
+		for (ProductItem product : productList) {
+
+			if (taxApplied.equalsIgnoreCase("yes")) {
+				total += ((product.getQuantity() * product.getUnitPrice()) *(1 + (product.getTaxPercentage()/100)) )  ;
+			} else {
+				total += (product.getQuantity() * product.getUnitPrice())  ;				
+			}
+		}
+		return total;
 	}
 
 	private List<Payment> populatePayments(HttpServletRequest request, Expense expense, int userId, int ownerId) {
@@ -105,28 +137,29 @@ public class ExpenseController {
 		System.out.println("paymentCount : " + paymentCount);
 
 		for (int i = 0; i < paymentCount; i++) {
-				String amountS = request.getParameter("amount" + i);
-				if (amountS == null || amountS.isBlank())
-					continue;// seems this row is getting deleted
+			String amountS = request.getParameter("amount" + i);
+			if (amountS == null || amountS.isBlank())
+				continue;// seems this row is getting deleted
 
-				double amount = Double.parseDouble(amountS);
-				String paymentType = request.getParameter("paymentType" + i);
-				Payment payment = null;
-				String paymentId = request.getParameter("paymentId" + i);
-				if (null != paymentId && Integer.parseInt(paymentId) > 0) {
-					payment = paymentService.getPayment(Integer.parseInt(paymentId));
-					payment.setAmout(amount);
-					payment.setEnteredBy(userId);
-					payment.setEnteredOn(new Date());
-					payment.setExpense(expense);
-					payment.setOwnerId(ownerId);
-					payment.setPaymentType(paymentType);
-				} else {
-					payment = new Payment(userId, new Date(), ownerId, expense,amount,paymentType); 
-				}
-				paymentService.savePayment(payment);
-				System.out.println("Payment: " + i + " : " + payment.getId());
-				paymentList.add(payment);
+			double amount = Double.parseDouble(amountS);
+			String paymentType = request.getParameter("paymentType" + i);
+			String comment = request.getParameter("comment" + i);
+			Payment payment = null;
+			String paymentId = request.getParameter("paymentId" + i);
+			if (null != paymentId && Integer.parseInt(paymentId) > 0) {
+				payment = paymentService.getPayment(Integer.parseInt(paymentId));
+				System.out.println("old Payment: " + i + " : " + payment);
+
+				payment.setAmout(amount);
+				payment.setExpense(expense);
+				payment.setPaymentType(paymentType);
+				payment.setComment(comment);
+			} else {
+				payment = new Payment(userId, new Date(), ownerId, expense, amount, paymentType, comment);
+			}
+			paymentService.savePayment(payment);
+			System.out.println("new Payment: " + i + " : " + payment);
+			paymentList.add(payment);
 
 		}
 		return paymentList;
@@ -153,38 +186,44 @@ public class ExpenseController {
 				String brandName = request.getParameter("brandName" + i);
 				String unitType = request.getParameter("unitType" + i);
 
-				String subUnitType = Constants.isUnitType(unitType) ? request.getParameter("subUnitType" + i) : null;
+				int subUnitQuantity = Units.isComplexUnitType(unitType)
+						? Integer.parseInt(request.getParameter("subUnitQuantity" + i))
+						: 0;
 				double quantity = Double.parseDouble(request.getParameter("quantity" + i));
 				double unitPrice = Double.parseDouble(request.getParameter("unitPrice" + i));
-				double taxPercentage = Double.parseDouble(request.getParameter("taxPercentage" + i));
+				double taxPercentage = Double.parseDouble(
+						expense.getTaxApplied().equalsIgnoreCase("yes") ? request.getParameter("taxPercentage" + i)
+								: "0");
 				String expiryDateS = request.getParameter("expiryDate" + i);
-				Date expiryDate = expiryDateS.isBlank() ? null : new SimpleDateFormat("dd/MM/yyyy").parse(expiryDateS);
+				System.out.println("expiryDateS " + expiryDateS);
+				Date expiryDate = DateUtil.getDate(expiryDateS);
 
 				ProductItem product = null;
 				String productId = request.getParameter("productId" + i);
 				if (null != productId && Integer.parseInt(productId) > 0) {
 					product = productService.getProductItem(Integer.parseInt(productId));
+					System.out.println("product :  " + product);
 					product.setBrandName(brandName);
 					product.setCategory(category);
 					product.setEnteredBy(userId);
-					product.setEnteredOn(new Date());
+					product.setModifiedOn(new Date());
 					product.setExpense(expense);
 					product.setExpiryDate(expiryDate);
 					product.setOwnerId(ownerId);
 					product.setProductName(productName);
 					product.setQuantity(quantity);
-					product.setSubUnitType(subUnitType);
+					product.setSubUnitQuantity(subUnitQuantity);
 					product.setTaxPercentage(taxPercentage);
 					product.setUnitPrice(unitPrice);
 					product.setUnitType(unitType);
 				} else {
 					product = new ProductItem(userId, new Date(), ownerId, expense, category, productName, brandName,
-							unitType, subUnitType, quantity, unitPrice, taxPercentage, expiryDate);
+							unitType, subUnitQuantity, quantity, unitPrice, taxPercentage, expiryDate);
 				}
 				productService.saveProductItem(product);
 				System.out.println("ProductItem: " + i + " : " + product.getId());
 				productList.add(product);
-			} catch (ParseException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 

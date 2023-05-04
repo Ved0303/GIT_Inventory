@@ -1,5 +1,6 @@
 package com.kheti.Inventory.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -32,6 +33,8 @@ public class OrganizationService {
 	public List<Organization> getAllOrganization() {
 		Iterable<Organization> organizationIter = organizationRepository.findAll();
 		List<Organization> organizationList= StreamSupport.stream(organizationIter.spliterator(), false).collect(Collectors.toList());
+		if(organizationList==null)
+			organizationList=new ArrayList<>();
 		return organizationList;
 	}
 }
