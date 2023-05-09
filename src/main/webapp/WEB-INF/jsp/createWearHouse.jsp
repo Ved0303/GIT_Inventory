@@ -4,7 +4,7 @@
 
 <%@ page
 	import="java.util.*,com.kheti.Inventory.model.WearHouse"%>
-
+ 
  
 <script src="js/form.js"></script>
  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"

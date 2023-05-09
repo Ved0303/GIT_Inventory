@@ -111,8 +111,8 @@ function addPaymentRow() {
 	  var cell4 = row.insertCell(3);
 	  var cell5 = row.insertCell(4);
 	  
-	  cell1.innerHTML = "<input type=text name='amount"+paymentRowIDIndex+"'  id='amount"+paymentRowIDIndex+"'  onchange='reloadProperties()' > ";
-	  cell2.innerHTML = createPaymentTypeCell("paymentType"+paymentRowIDIndex);
+	  cell1.innerHTML = createPaymentTypeCell("paymentType"+paymentRowIDIndex);
+	  cell2.innerHTML = "<input type=text name='amount"+paymentRowIDIndex+"'  id='amount"+paymentRowIDIndex+"'  onchange='reloadProperties()' > ";
 	  cell3.innerHTML = "<input type=text name='comment"+paymentRowIDIndex+"'  id='comment"+paymentRowIDIndex+"' > ";
 	  cell4.innerHTML = " Today ";
 	  cell5.innerHTML = "<div class=delete  onclick='deletePaymentRow(this)'>Delete</div>";
