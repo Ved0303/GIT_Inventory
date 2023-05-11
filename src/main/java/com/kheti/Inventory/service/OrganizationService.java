@@ -29,10 +29,16 @@ public class OrganizationService {
 		
 		return organization.isPresent()? organization.get() : null;
 	}
-	
-	public List<Organization> getAllOrganization() {
-		Iterable<Organization> organizationIter = organizationRepository.findAll();
-		List<Organization> organizationList= StreamSupport.stream(organizationIter.spliterator(), false).collect(Collectors.toList());
+
+	/*
+	 * public List<Organization> getAllOrganization() { Iterable<Organization>
+	 * organizationIter = organizationRepository.findAll(); List<Organization>
+	 * organizationList= StreamSupport.stream(organizationIter.spliterator(),
+	 * false).collect(Collectors.toList()); if(organizationList==null)
+	 * organizationList=new ArrayList<>(); return organizationList; }
+	 */
+	public List<Organization> getAllOrganization(int ownerId) {
+		List<Organization> organizationList = organizationRepository.findByOwnerId(ownerId);;
 		if(organizationList==null)
 			organizationList=new ArrayList<>();
 		return organizationList;

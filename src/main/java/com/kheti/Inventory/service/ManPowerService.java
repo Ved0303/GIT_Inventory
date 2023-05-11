@@ -1,5 +1,6 @@
 package com.kheti.Inventory.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -13,25 +14,34 @@ import com.kheti.Inventory.repository.ManPowerRepository;
 
 @Service
 public class ManPowerService {
-	
+
 	@Autowired
 	ManPowerRepository manPowerRepository;
-	
-	public int saveManPower(ManPower manPower) {	
+
+	public int saveManPower(ManPower manPower) {
 		manPowerRepository.save(manPower);
-		System.out.println("ManPower with ID saved: "+manPower.getId());
+		System.out.println("ManPower with ID saved: " + manPower.getId());
 		return manPower.getId();
 	}
-	
+
 	public ManPower getManPower(int manPowerId) {
-		Optional<ManPower> manPower= manPowerRepository.findById(manPowerId);
-		
-		return manPower.isPresent()? manPower.get() : null;
+		Optional<ManPower> manPower = manPowerRepository.findById(manPowerId);
+
+		return manPower.isPresent() ? manPower.get() : null;
 	}
-	
-	public List<ManPower> getAllManPower() {
-		Iterable<ManPower> manPowerIter = manPowerRepository.findAll();
-		List<ManPower> manPowerList= StreamSupport.stream(manPowerIter.spliterator(), false).collect(Collectors.toList());
+
+	/*
+	 * public List<ManPower> getAllManPower() { Iterable<ManPower> manPowerIter =
+	 * manPowerRepository.findAll(); List<ManPower> manPowerList =
+	 * StreamSupport.stream(manPowerIter.spliterator(), false)
+	 * .collect(Collectors.toList()); return manPowerList; }
+	 */
+	public List<ManPower> getAllManPower(int ownerId) {
+		List<ManPower> manPowerList = manPowerRepository.findByOwnerId(ownerId);
+		if (manPowerList == null) {
+			manPowerList = new ArrayList<>();
+		}
+
 		return manPowerList;
 	}
 }

@@ -46,7 +46,9 @@ public class ExpenseController {
 	CategoryService categoryService;
 
 	@RequestMapping(value = "/createExpense", method = RequestMethod.GET)
-	public String showCreateExpensePage(ModelMap model, HttpServletRequest request) {
+	public String showCreateExpensePage(ModelMap model, HttpServletRequest request, HttpSession session) {
+
+		User user=(User)session.getAttribute("user");
 		System.out.println("Expense Controller -> showCreateExpensePage");
 		String expenseId = request.getParameter("id");
 		Expense expense = null;
@@ -56,9 +58,9 @@ public class ExpenseController {
 		}
 		model.put("expense", expense == null ? new Expense() : expense);
 
-		List<Organization> organizations = organizationService.getAllOrganization();
+		List<Organization> organizations = organizationService.getAllOrganization(user.getOwnerId());
 		request.setAttribute("organizations", organizations);
-		List<Category> categories = categoryService.getAllCategory();
+		List<Category> categories = categoryService.getAllCategory(user.getOwnerId());
 		request.setAttribute("categories", categories);
 
 		return "createExpense";
@@ -96,9 +98,9 @@ public class ExpenseController {
 
 		expenseService.saveExpense(expense); // Save after populating Products and Payments
 
-		List<Organization> organizations = organizationService.getAllOrganization();
+		List<Organization> organizations = organizationService.getAllOrganization(user.getOwnerId());
 		request.setAttribute("organizations", organizations);
-		List<Category> categories = categoryService.getAllCategory();
+		List<Category> categories = categoryService.getAllCategory(user.getOwnerId());
 		request.setAttribute("categories", categories);
 
 		model.put("expense", expense);
@@ -232,10 +234,12 @@ public class ExpenseController {
 	}
 
 	@RequestMapping(value = "/listExpense", method = RequestMethod.GET)
-	public String listExpense(HttpServletRequest request) {
+	public String listExpense(HttpServletRequest request, HttpSession session) {
 		System.out.println("Expense Controller -> listExpense");
 
-		List<Expense> expenseList = expenseService.getAllExpense();
+		User user=(User)session.getAttribute("user");
+
+		List<Expense> expenseList = expenseService.getAllExpense(user.getOwnerId());
 		request.setAttribute("expenseList", expenseList);
 
 		return "listExpense";

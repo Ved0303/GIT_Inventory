@@ -7,10 +7,13 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.kheti.Inventory.model.User;
 import com.kheti.Inventory.model.WearHouse;
 import com.kheti.Inventory.service.WearHouseService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class WearHouseController {
@@ -32,11 +35,13 @@ public class WearHouseController {
 	}
 
 	@RequestMapping(value = "/createWearHouse", method = RequestMethod.POST)
-	public String createWearHouse(@ModelAttribute WearHouse wearHouse, ModelMap model, HttpServletRequest request) {
+	public String createWearHouse(@ModelAttribute WearHouse wearHouse, ModelMap model, HttpServletRequest request, HttpSession session) {
+		User user = (User) session.getAttribute("user");
 	System.out.println("WearHouse Controller -> createWearHouse");
 
 		System.out.println(
-				"WearHouseName: " + request.getParameter("WearHouseName") );		
+				"WearHouseName: " + request.getParameter("WearHouseName") );	
+		wearHouse.setOwnerId(user.getOwnerId());
 	
 		int newWearHouseId = wearHouseService.saveWearHouse(wearHouse);
 		System.out.println("New WearHouse Created with ID: " + newWearHouseId);
@@ -47,10 +52,11 @@ public class WearHouseController {
 	}
 	
 	@RequestMapping(value = "/listWearHouse", method = RequestMethod.GET)
-	public String listWearHouse(HttpServletRequest request) {
+	public String listWearHouse(HttpServletRequest request, HttpSession session) {
+		User user = (User) session.getAttribute("user");
 		System.out.println("WearHouse Controller -> listWearHouse");
 		
-		List<WearHouse> wearHouseList= wearHouseService.getAllWearHouse();	
+		List<WearHouse> wearHouseList= wearHouseService.getAllWearHouse(user.getOwnerId());	
 		request.setAttribute("wearHouseList", wearHouseList);
 
 		return "listWearHouse";

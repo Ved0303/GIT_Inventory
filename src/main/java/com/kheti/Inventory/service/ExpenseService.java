@@ -1,5 +1,6 @@
 package com.kheti.Inventory.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,9 +30,16 @@ public class ExpenseService {
 		return expense.isPresent()? expense.get() : null;
 	}
 	
-	public List<Expense> getAllExpense() {
-		Iterable<Expense> expenseIter = expenseRepository.findAll();
-		List<Expense> expenseList= StreamSupport.stream(expenseIter.spliterator(), false).collect(Collectors.toList());
+	/*
+	 * public List<Expense> getAllExpense() { Iterable<Expense> expenseIter =
+	 * expenseRepository.findAll(); List<Expense> expenseList=
+	 * StreamSupport.stream(expenseIter.spliterator(),
+	 * false).collect(Collectors.toList()); return expenseList; }
+	 */	public List<Expense> getAllExpense(int ownerId) {
+		List<Expense> expenseList = expenseRepository.findByOwnerId(ownerId);
+		if(expenseList==null) {
+			expenseList=new ArrayList<>();
+		}
 		return expenseList;
 	}
 }

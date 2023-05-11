@@ -11,8 +11,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttributes;
-
 import com.kheti.Inventory.model.Crop;
 import com.kheti.Inventory.model.Form;
 import com.kheti.Inventory.model.User;
@@ -115,10 +113,11 @@ public class FormController {
 	}
 	
 	@RequestMapping(value = "/listForm", method = RequestMethod.GET)
-	public String listForm(HttpServletRequest request) {
+	public String listForm(HttpServletRequest request,HttpSession session) {
+		User user=(User)session.getAttribute("user");
 		System.out.println("Form Controller -> listForm");
 		
-		List<Form> formList= formService.getAllForms();	
+		List<Form> formList= formService.getAllForms(user.getOwnerId());	
 		request.setAttribute("formList", formList);
 
 		return "listForm";

@@ -1,5 +1,6 @@
 package com.kheti.Inventory.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -43,10 +44,18 @@ public class FormService {
 			return null;
 	}
 	
-	public List<Form> getAllForms() {
-		Iterable<Form> formsIter = formRepository.findAll();
-		List<Form> formLis= StreamSupport.stream(formsIter.spliterator(), false).collect(Collectors.toList());
-		return formLis;
+	/*
+	 * public List<Form> getAllForms() { Iterable<Form> formsIter =
+	 * formRepository.findAll(); List<Form> formLis=
+	 * StreamSupport.stream(formsIter.spliterator(),
+	 * false).collect(Collectors.toList()); return formLis; }
+	 */
+	public List<Form> getAllForms(int ownerId) {
+		List<Form> formList = formRepository.findByOwnerId(ownerId);
+		if(formList==null) {
+			formList=new ArrayList<>();
+		}
+		return formList;
 	}
 
 

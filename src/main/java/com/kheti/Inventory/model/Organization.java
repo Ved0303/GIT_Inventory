@@ -17,11 +17,13 @@ public class Organization {
 	String aadhar;
 	String pan;
 	String orgType; //Customer/Supplier
+	int ownerId;
+
 
 	public Organization() {}
 
 	public Organization(int orgID, String orgName, String email, String phone, String aadhar, String pan,
-			String orgType) {
+			String orgType, int ownerId) {
 		super();
 		this.orgID = orgID;
 		this.orgName = orgName;
@@ -30,10 +32,12 @@ public class Organization {
 		this.aadhar = aadhar;
 		this.pan = pan;
 		this.orgType = orgType;
+		this.ownerId=ownerId;
+		
 	}
 	
 	public Organization(String orgName, String email, String phone, String aadhar, String pan,
-			String orgType) {
+			String orgType, int ownerId) {
 		super();
 		this.orgName = orgName;
 		this.email = email;
@@ -41,6 +45,7 @@ public class Organization {
 		this.aadhar = aadhar;
 		this.pan = pan;
 		this.orgType = orgType;
+		this.ownerId=ownerId;
 	}
 
 	public int getOrgID() {
@@ -98,5 +103,14 @@ public class Organization {
 	public void setOrgType(String orgType) {
 		this.orgType = orgType;
 	}
+
+	public int getOwnerId() {
+		return ownerId;
+	}
+
+	public void setOwnerId(int ownerId) {
+		this.ownerId = ownerId;
+	}
+	
 
 }

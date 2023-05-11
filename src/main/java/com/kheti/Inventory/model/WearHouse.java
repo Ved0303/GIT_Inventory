@@ -14,6 +14,8 @@ public class WearHouse {
 	String wearHouseName;
 	String wearHouseAddress;
 	String wearHouseContact;
+    private int ownerId;
+
 	
 	public WearHouse() {}
 	
@@ -40,6 +42,14 @@ public class WearHouse {
 	}
 	public void setWearHouseContact(String wearHouseContact) {
 		this.wearHouseContact = wearHouseContact;
+	}
+
+	public int getOwnerId() {
+		return ownerId;
+	}
+
+	public void setOwnerId(int ownerId) {
+		this.ownerId = ownerId;
 	}
 	
 	

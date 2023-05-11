@@ -1,5 +1,6 @@
 package com.kheti.Inventory.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,9 +30,17 @@ public class WearHouseService {
 		return wearHouse.isPresent()? wearHouse.get() : null;
 	}
 	
-	public List<WearHouse> getAllWearHouse() {
-		Iterable<WearHouse> wearHouseIter = wearHouseRepository.findAll();
-		List<WearHouse> wearHouseList= StreamSupport.stream(wearHouseIter.spliterator(), false).collect(Collectors.toList());
+	/*
+	 * public List<WearHouse> getAllWearHouse() { Iterable<WearHouse> wearHouseIter
+	 * = wearHouseRepository.findAll(); List<WearHouse> wearHouseList=
+	 * StreamSupport.stream(wearHouseIter.spliterator(),
+	 * false).collect(Collectors.toList()); return wearHouseList; }
+	 */
+	public List<WearHouse> getAllWearHouse(int ownerId) {
+		List<WearHouse> wearHouseList = wearHouseRepository.findByOwnerId(ownerId);
+		if(wearHouseList==null) {
+			wearHouseList=new ArrayList<>();
+		}
 		return wearHouseList;
 	}
 }

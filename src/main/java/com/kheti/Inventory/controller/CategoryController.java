@@ -21,7 +21,10 @@ public class CategoryController {
 	CategoryService categoryService;
 
 	@RequestMapping(value = "/createCategory", method = RequestMethod.GET)
-	public String showCreateCategoryPage(ModelMap model, HttpServletRequest request) {
+	public String showCreateCategoryPage(ModelMap model, HttpServletRequest request, HttpSession session) {
+
+		User user=(User)session.getAttribute("user");
+
 		System.out.println("Category Controller -> showCreateCategoryPage");
 		String categoryId=request.getParameter("categoryId");
 		Category category=null;
@@ -30,7 +33,7 @@ public class CategoryController {
 			
 		}
 		model.put("category", category==null ?new Category() : category);
-		List<Category> categoryList= categoryService.getAllCategory();
+		List<Category> categoryList= categoryService.getAllCategory(user.getOwnerId());
 		System.out.println("categoryList size="+categoryList.size());
 		request.setAttribute("categoryList", categoryList);
 		
@@ -57,17 +60,20 @@ public class CategoryController {
 		System.out.println("New Category Created with ID: " + newCategoryId);
 		model.put("category", category);
 		model.put("errorMessage", "Record Saved Successfully");
-		List<Category> categoryList= categoryService.getAllCategory();	
+		List<Category> categoryList= categoryService.getAllCategory(user.getOwnerId());	
 		request.setAttribute("categoryList", categoryList);
 
 		return "createCategory";
 	}
 	
 	@RequestMapping(value = "/listCategory", method = RequestMethod.GET)
-	public String listCategory(HttpServletRequest request) {
+	public String listCategory(HttpServletRequest request, HttpSession session) {
+
+		User user=(User)session.getAttribute("user");
+
 		System.out.println("Category Controller -> listCategory");
 		
-		List<Category> categoryList= categoryService.getAllCategory();	
+		List<Category> categoryList= categoryService.getAllCategory(user.getOwnerId());	
 		request.setAttribute("categoryList", categoryList);
 
 		return "listCategory";

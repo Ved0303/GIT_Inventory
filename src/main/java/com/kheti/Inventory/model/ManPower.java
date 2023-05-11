@@ -17,11 +17,12 @@ public class ManPower {
 	String aadhar;
 	String pan;
 	String type; // Employee/ Contractor/ Individual
+    private int ownerId;
 
 	public ManPower() {
 	}
 
-	public ManPower(int id, String name, String email, String phone, String aadhar, String pan, String type) {
+	public ManPower(int id, String name, String email, String phone, String aadhar, String pan, String type, int ownerId) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -30,9 +31,10 @@ public class ManPower {
 		this.aadhar = aadhar;
 		this.pan = pan;
 		this.type = type;
+		this.ownerId=ownerId;
 	}
 
-	public ManPower(String name, String email, String phone, String aadhar, String pan, String type) {
+	public ManPower(String name, String email, String phone, String aadhar, String pan, String type, int ownerId) {
 		super();
 		this.name = name;
 		this.email = email;
@@ -40,6 +42,7 @@ public class ManPower {
 		this.aadhar = aadhar;
 		this.pan = pan;
 		this.type = type;
+		this.ownerId=ownerId;
 	}
 
 	public int getId() {
@@ -97,5 +100,20 @@ public class ManPower {
 	public void setType(String type) {
 		this.type = type;
 	}
+
+	public int getOwnerId() {
+		return ownerId;
+	}
+
+	public void setOwnerId(int ownerId) {
+		this.ownerId = ownerId;
+	}
+
+	@Override
+	public String toString() {
+		return "ManPower [id=" + id + ", name=" + name + ", email=" + email + ", phone=" + phone + ", aadhar=" + aadhar
+				+ ", pan=" + pan + ", type=" + type + ", ownerId=" + ownerId + "]";
+	}
+	
 
 }
