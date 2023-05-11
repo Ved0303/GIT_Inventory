@@ -61,6 +61,7 @@ public class FormController {
 		
 		form.setModifiedBy(user.getId());
 		form.setModifiedOn(new Date());
+		form.setOwnerId(user.getOwnerId());
 
 		System.out.println(form);
 		List<Crop> corpList = new ArrayList<>();

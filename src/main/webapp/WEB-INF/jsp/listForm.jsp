@@ -37,8 +37,8 @@ for(Form form: formList){
   <tr>
     <td><%= form.getFormName()%></td>
     <td><%= form.getCity()%>, <%= form.getState()%></td>
-    <td><%= form.getArea()%>  <%= form.getAreaType()%></td>
-    <td><%= form.getValveCapacity()%></td>
+    <td align="right"><%= String.format("%.2f",form.getArea())%>  <%= form.getAreaType()%></td>
+    <td align="right"><%= form.getValveCapacity()%></td>
     <td><a href="/createForm?formId=<%= form.getFormId() %>"> Edit </a></td>
   </tr>
 
