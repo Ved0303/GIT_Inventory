@@ -5,9 +5,10 @@
 <%@ page
 	import="java.util.Map,com.kheti.Inventory.model.Form,com.kheti.Inventory.model.Crop"%>
 
-<link rel="stylesheet" href="css/form.css"> 
+
 <script src="js/form.js"></script>
  
+</head>
 <script>
 
 <%
@@ -41,7 +42,7 @@ function addRow() {
 	  cell3.innerHTML = "<input type=text name='valveNumbers"+rowIDIndex+"' id='valveNumbers"+rowIDIndex+"'  onchange='calcAllValveNo()'> ";
 	  cell4.innerHTML = "<input type=checkbox checked value='true' name='isActive"+rowIDIndex+"'   id='isActive"+rowIDIndex+"'> ";
 	  cell5.innerHTML = "<input type=text name='cropArea"+rowIDIndex+"'id='cropArea"+rowIDIndex+"' onchange='calcAssignedCropArea()'> ";
-	  cell6.innerHTML = "<div class=delete  onclick='deleteRow(this)'>Delete</div>"
+	  cell6.innerHTML = "<div class='delete btn btn-outline-dark btn-sm'  onclick='deleteRow(this)'>Delete</div>"
 
 	  rowIndex=rowIndex+1;
 	  rowIDIndex=rowIDIndex+1;
@@ -192,102 +193,118 @@ function calcAssignedCropArea(){
 
 
 
-	<form action="createForm" method="post" name="myForm" class="myForm" 
-		onsubmit="return validateForm()">
+	<form action="createForm" method="post" name="myForm" class="border m-3 border-primary bg-info-subtle fw-bold "
+        onsubmit="return validateForm()">
 
-		<h2>Form Information</h2>
-		<h3><font color="red">${errorMessage}</font></h3>
-		
-		<hr>
+        <h2 class="text-center ">Form Information</h2>
+        <h3>
+            <font color="red">${errorMessage}</font>
+        </h3>
 
-		<input type="hidden" name="formId" value="${form.formId}" /> Form
-		Name <input type="text" name="formName" value="${form.formName}" />
-		<br> Area <select name="areaType">
-			<%
-			Map<String, String> areaTypes = (Map<String, String>) request.getAttribute("areaTypes");
-			for (String key : areaTypes.keySet()) {
-			%>
-			<option value="<%=key%>"
-				<%=key.equalsIgnoreCase(form2.getAreaType()) ? "selected" : ""%>><%=areaTypes.get(key)%></option>
-			<%
-			}
-			%>
-		</select> <br> 
-		Actual Form Area <input type="text" id="area" name="area"
-			value="${form.area}" onChange="calculateRemaining()" /> <br>
-		Cultivation Area <input type="text" id="cultivationArea"
-			name="cultivationArea" value="${form.cultivationArea}"
-			onChange="calculateRemaining()" /> <br> Remaining Area <input
-			id="remainingArea" type="text" disabled="disabled" /> <br>
-		Address 1 <input type="text" name="address1" value="${form.address1}" />
-		Address 2 <input type="text" name="address2" value="${form.address2}" />
-		<br> City <input type="text" name="city" value="${form.city}" />
-		State <input type="text" name="state" value="${form.state}" /><br>
+        <hr>
 
-		Valve <input type="number" name="valveCapacity" id="valveCapacity"
-			value="${form.valveCapacity}" />
-		<hr>
-		<p id="cropinftext">------------Crop Information -------</p>
-		<hr>
+        <input type="hidden" name="formId" value="${form.formId}" />
+        <div class="m-2 col-lg-4 ">
+            <!-- <label for=" Form Name " class="form-label"> Form Name </label> -->
+            Form name : <input type="text" class="form-control" id=" Form Name" name="formName"
+                value="${form.formName}" />
+        </div>
+        <div class="m-2 col-lg-4 ">
+            <!-- <label for="Area " class="form-label">Area </label> -->
+            Area : <select class="form-select" id="Area" name="areaType">
+                <% Map<String, String> areaTypes = (Map<String, String>) request.getAttribute("areaTypes");
+                        for (String key : areaTypes.keySet()) {
+                        %>
+                        <option value="<%=key%>" <%=key.equalsIgnoreCase(form2.getAreaType()) ? "selected" : "" %>>
+                            <%=areaTypes.get(key)%>
+                        </option>
+                        <% } %>
+            </select>
+        </div>
+        <div class="m-2 col-lg-4 ">
+            Actual Form Area :<input type="text" class="form-control" id="area" name="area" value="${form.area}"
+                onChange="calculateRemaining()" />
+        </div>
+        <div class="m-2 col-lg-4 ">
+            Cultivation Area : <input type="text" class="form-control" id="cultivationArea" name="cultivationArea"
+                value="${form.cultivationArea}" onChange="calculateRemaining()" />
+        </div>
+        <div class="m-2 col-lg-4 ">
+            Remaining Area :<input id="remainingArea" type="text" class="form-control" disabled="disabled" />
+        </div>
+        <div class="m-2 col-lg-4 ">
+            Address 1 :<input type="text" class="form-control" name="address1" value="${form.address1}" />
+        </div>
+        <div class="m-2 col-lg-4 ">
+            Address 2 :<input type="text" class="form-control" name="address2" value="${form.address2}" />
+        </div>
+        <div class="m-2 col-lg-4 ">
+            City :<input type="text" class="form-control" name="city" value="${form.city}" />
+        </div>
+        <div class="m-2 col-lg-4 ">
+            State :<input type="text" class="form-control" name="state" value="${form.state}" />
+        </div>
+        <div class="m-2 col-lg-4 ">
+            Valve :<input type="number" class="form-control" name="valveCapacity" id="valveCapacity"
+                value="${form.valveCapacity}" />
+        </div>
+        <hr>
+        <h2 class="  text-center ">------------Crop Information -------</h2>
+        <hr>
+        <div>
+            <p class="border border-black w-50 p-2 text-center bg-primary " id="adding" onclick="addRow()">Add New Crop
+            </p>
+        </div>
+        <hr>
 
-		<p id="adding" onclick="addRow()">Add New Crop</p>
-		<hr>
+        <input type="hidden" name="cropCount" value=<%=cropInitialCount%> />
+        <input type="hidden" name="cropInitialCount" value=<%=cropInitialCount%> />
+        <table id="myTable"  class="table">
 
-		<input type="hidden" name="cropCount" value=<%=cropInitialCount%> />
-		<input type="hidden" name="cropInitialCount"
-			value=<%=cropInitialCount%> />
-		<table id="myTable" border=1>
+            <tr>
+                <td>Name</td>
+                <td>Variety</td>
+                <td>Valve No</td>
+                <td>Active</td>
+                <td>Crop Area</td>
+                <td>Action</td>
+            </tr>
+            <% for (int i=0; i < cropInitialCount; i++) { Crop crop=form2.getCropList().get(i); %>
+                <tr>
+                    <td><input type=hidden name='cropId<%=i%>' id='cropId<%=i%>' value="<%=crop.getCropId()%>">
+                        <input type=text name='cropName<%=i%>' id='cropName<%=i%>' value="<%=crop.getCropName()%>">
+                    </td>
+                    <td><input type=text name='variety<%=i%>' id='variety<%=i%>' value="<%=crop.getCropVariety()%>">
+                    </td>
+                    <td><input type=text name='valveNumbers<%=i%>' id='valveNumbers<%=i%>'
+                            value="<%=crop.getValveList()%>" onchange="calcAllValveNo()">
+                    </td>
+                    <td><input type=checkbox name='isActive<%=i%>' id='isActive<%=i%>' <%=crop.isActive() ? "checked"
+                            : "" %>
+                        value="true"></td>
+                    <td><input type=text name='cropArea<%=i%>' id='cropArea<%=i%>' value="<%=crop.getCropArea()%>"
+                            onchange="calcAssignedCropArea()"></td>
+                    <td>
+                        <div onclick='Release(<%=crop.getCropId()%>)'>Release</div>
+                    </td>
+                </tr>
+                <% } %>
 
-			<tr>
-				<td>Name</td>
-				<td>Variety</td>
-				<td>Valve No</td>
-				<td>Active</td>
-				<td>Crop Area</td>
-				<td>Action</td>
-			</tr>
-			<%
-			for (int i = 0; i < cropInitialCount; i++) {
-				Crop crop = form2.getCropList().get(i);
-			%>
-			<tr>
-				<td><input type=hidden name='cropId<%=i%>' id='cropId<%=i%>'
-					value="<%=crop.getCropId()%>"> <input type=text
-					name='cropName<%=i%>' id='cropName<%=i%>'
-					value="<%=crop.getCropName()%>"></td>
-				<td><input type=text name='variety<%=i%>' id='variety<%=i%>'
-					value="<%=crop.getCropVariety()%>"></td>
-				<td><input type=text name='valveNumbers<%=i%>'
-					id='valveNumbers<%=i%>' value="<%=crop.getValveList()%>" onchange="calcAllValveNo()">
-				</td>
-				<td><input type=checkbox name='isActive<%=i%>'
-					id='isActive<%=i%>' <%=crop.isActive() ? "checked" : ""%>
-					value="true"></td>
-				<td><input type=text name='cropArea<%=i%>'
-					id='cropArea<%=i%>' value="<%=crop.getCropArea()%>"  onchange="calcAssignedCropArea()"></td>
-				<td>
-					<div onclick='Release(<%=crop.getCropId()%>)'>Release</div>
-				</td>
-			</tr>
-			<%
-			}
-			%>
-			
-						<tr>
-				<td><b>Total : </b></td>
-				<td></td>
-				<td id="allValveNo"></td>
-				<td></td>
-				<td id="assignedCropArea"></td>
-				<td></td>
-			</tr>
-			
-		</table>
+                    <tr>
+                        <td><b>Total : </b></td>
+                        <td></td>
+                        <td id="allValveNo"></td>
+                        <td></td>
+                        <td id="assignedCropArea"></td>
+                        <td></td>
+                    </tr>
+
+        </table>
 
 
-		<input id="btn" type=submit value="Save Form" />
+        <input id="btn" class="btn btn-primary m-3" type=submit value="Save Form" />
 
-	</form>
+    </form>
 
 
 <jsp:include page="/footer"></jsp:include>

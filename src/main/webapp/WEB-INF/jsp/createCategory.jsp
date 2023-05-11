@@ -5,7 +5,7 @@
 <%@ page
 	import="java.util.*,com.kheti.Inventory.model.Category"%>
 
-<link rel="stylesheet" href="css/form.css"> 
+
 <script src="js/form.js"></script>
 <script>
 

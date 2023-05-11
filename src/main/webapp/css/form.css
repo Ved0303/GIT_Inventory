@@ -42,21 +42,7 @@ margin-right: 500px; */
 	border-radius: 30px;
 }
 
-#btn {
-	text-align: center;
-	padding: 10px;
-	margin: 8px;
-	background-color: #20ffe6;
-	border-radius: 25px;
-}
 
-#btn:hover {
-	background-color: black;
-	font-size: larger;
-	color: white;
-	cursor: pointer;
-
-}
 
 .delete {
 	cursor: pointer;

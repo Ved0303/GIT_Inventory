@@ -6,10 +6,23 @@
 <%@ page
 	import="com.kheti.Inventory.model.Category"%>
 
-		<h2>List Of Category</h2><br>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+<script>
+    $(document).ready(function () {
+    $('#example').DataTable();
+});
+</script>
 
-<table Border=1>
+		
+<div class="container pt-2 mt-2 bg-warning-subtle ">
+        <h2 class="text-center">List Of Category</h2>
+    <table id="example" class="table table-hover table-striped" style="width:100%">
+ <thead>
   <tr>
     <th>Category Name</th>
     <th>Equipment Type</th>
@@ -17,11 +30,14 @@
     <th>Parent Category</th>
     <th>Action</th>
   </tr>
+   </thead>
+   <tbody>
 <%
 List<Category> categoryList= request.getAttribute("categoryList") !=null ? (List<Category>)request.getAttribute("categoryList") : new ArrayList();
 
 for(Category category: categoryList){
 %>
+ 
   <tr>
     <td><%= category.getCategoryName()%></td>
     <td><%= category.getEquipmentType()%></td>
@@ -33,7 +49,8 @@ for(Category category: categoryList){
 <%
 }
 %>
+</tbody>
 </table>
-
+</div>
 
 <jsp:include page="/footer"></jsp:include>
